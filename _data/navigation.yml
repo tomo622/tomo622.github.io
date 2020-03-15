@@ -1,5 +1,11 @@
 # main links
 main:
+  - title: Side Projects
+    url: /side_projects/
+
+  - title: "Algorithm"
+    url: /algorithm/
+
   - title: "Categories"
     url: /categories/
 
