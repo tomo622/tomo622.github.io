@@ -24,7 +24,7 @@ int end = //끝 지점 인덱스
 int temp;
 
 while(start < end){
-	temp = arr[start];
+    temp = arr[start];
     arr[start] = arr[end];
     arr[end] = temp;
     
