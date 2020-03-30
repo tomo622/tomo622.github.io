@@ -33,7 +33,7 @@ final int M = //전체 원소 중 선택할 원소 개수
 int[] arr = {//원소들 저장}
 boolean[] visit = new boolean[N];
 
-void recursive(int index, int cnt){
+void combination(int index, int cnt){
     if(cnt == M){
         //현재 방문 상태인 원소 출력...
         return;
@@ -42,11 +42,11 @@ void recursive(int index, int cnt){
     
     //현재 인덱스를 선택하는 경우
     visit[index] = true;
-    recursive(index+1, cnt+1);
+    combination(index+1, cnt+1);
     visit[index] = false;
     
     //현재 인덱스를 선택하지 않는 경우
-    recursive(index+1, cnt);
+    combination(index+1, cnt);
 }
 ```
 
@@ -69,7 +69,7 @@ final int N = //원소의 총 개수
 final int M = //전체 원소 중 선택할 원소 개수
 int[] arr = {//원소들 저장}
     
-void bit(){
+void combination(){
     int cnt = (1<<N); //원소의 총 개수로 만들 수 있는 모든 부분집합의 수
     
     //부분집합을 하나씩 확인한다.
