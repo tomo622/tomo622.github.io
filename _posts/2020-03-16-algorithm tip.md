@@ -6,7 +6,7 @@ categories:
 last_modified_at: 2020-04-20T22:28:00
 ---
 
-#### 입출력 시간 줄이기
+#### 입출력 시간 줄이기 (Java)
 
 - 입출력의 수가 많은 경우 `BufferedReader` 와 `BufferedWriter`를 사용한다.
 
