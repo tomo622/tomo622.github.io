@@ -41,7 +41,9 @@ void permutation(int cnt){
 #### 비트연산
 
 위 재귀함수를 이용한 구현에서는 방문 체크를 위해 `boolean` 배열을 사용했지만 이번에는 플래그의 비트연산을 통해 방문 체크를 한다.
+
 수의 인덱스 만큼 비트를 밀고 현재의 플래그 비트와 AND(&) 연산을 통해 해당 위치의 비트가 1인지 확인한다. 1인 비트는 그 수를 방문했음을 나타낸다. 아직 방문하지 않은 수는 방문 표시를 하기 위해 수의 인덱스 만큼 밀어낸 비트를 OR(|) 연산으로 플래그에 반영해 준다.
+
 플래그 : 0001 0010
 ...
 인덱스 1번의 방문 확인 : 0001 0010 & 0000 0010 -> 0000 0010 방문 했음
@@ -54,18 +56,17 @@ final int N = //수의 개수
 int[] arr = new int[N]; //순열 저장
 
 void permutation(int cnt, int flag){
-		if(cnt == N) {
-			//순열 출력...
-			return;
-		}
-  
-		for(int i = 0; i < N; i++) {
-			if((flag & 1<<i) != 0) continue;
-			
-			nums[cnt] = i+1;
-			permutation(cnt+1, flag | 1<<i);
-			nums[cnt] = 0;
-		}
+    if(cnt == N) {
+      //순열 출력...
+      return;
+    }
+    
+    for(int i = 0; i < N; i++) {
+      if((flag & 1<<i) != 0) continue;
+      nums[cnt] = i+1;
+      permutation(cnt+1, flag | 1<<i);
+      nums[cnt] = 0;
+    }
 }
 ```
 
