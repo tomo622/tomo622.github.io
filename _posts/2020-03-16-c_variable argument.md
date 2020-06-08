@@ -1,14 +1,12 @@
 ---
 title: "가변인자"
-excerpt: "가변인자의 원리에 대해 알아본다."
+excerpt: "가변인자의 동작 원리에 대해 알아본다."
 categories:
  - c language
 last_modified_at: 2020-03-16T02:30:00
 ---
 
-# 가변인자 (Variable Argument)
-
- 가변인자를 갖는 함수를 구현하기 위해서 함수의 마지막 인자에 줄임표(...)를 선언한다. 단, 가변인자 이전에 하나 이상의 고정인자를 가져야한다. 고정인자는 사용되지 않더라도 반드시 필요하다.
+ 가변인자 (Variable Argument)를 갖는 함수를 구현하기 위해서 함수의 마지막 인자에 줄임표(...)를 선언한다. 단, 가변인자 이전에 하나 이상의 고정인자를 가져야한다. 고정인자는 사용되지 않더라도 반드시 필요하다.
 
 ```
 반환자료형 함수명(자료형 고정인자, ...){ ... }
@@ -20,7 +18,8 @@ last_modified_at: 2020-03-16T02:30:00
 
 
 
-## 매크로
+
+### 매크로 분석
 
  선언된 가변인자에 접근하기 위해서는 `stdarg.h`에 포함된 매크로를 사용해야한다. (표준 ANSI C89 이전 버전에서는 `varargs.h`, `stdarg.h` 내부에서 `varargs.h` 를 포함하고 있다.)
 
@@ -34,7 +33,9 @@ last_modified_at: 2020-03-16T02:30:00
 #define va_copy(destination, source) ((destination) = (source))
 ```
 
-### va_list
+
+
+#### va_list
 
  인자 목록 포인터, 현재 읽기 위한 가변인자의 첫 번째 주소를 저장한다. `varargs.h`에 다음과 같이 정의되어있다.
 
@@ -44,7 +45,9 @@ typedef char * va_list;
 
  `char *`을 사용하는 이유는 인자 목록 포인터를 이동시킬 때 1byte 씩 연산하기 위함이다.
 
-### va_start
+
+
+#### va_start
 
  인자 목록 포인터(`va_list`)를 전달 된 첫 번째 가변인자의 시작 포인터 위치로 설정한다.
 
@@ -78,7 +81,9 @@ void __cdecl __va_start(va_list* , ...);
     `ap`는 인자 목록 주소를 가르키는 포인터이고 `v`는 가변인자 바로 앞에 위치한 고정인자이다. `_ADDRESSOF(v)` 는 인자의 (시작)주소를 반환하는 매크로이다. 해당 매크로는 가변인자 바로 앞에 있는 고정인자의 시작 위치에 고정인자의 자료형이 차지하는 스택 단위 크기(`_INTSIZEOF 사용`)를 더하여 첫 번째 가변인자의 시작 주소를 찾아내고 인자 목록 포인터에 저장한다.
     ![x86_start](https://user-images.githubusercontent.com/19742979/56412489-52dcfa00-62bf-11e9-8e65-25be9edeaf59.PNG){: .align-center}
 
-### va_arg
+
+
+#### va_arg
 
  인자 목록 포인터(`va_list`)의 위치에서 `type`의 값을 검색한다. 즉, `va_list`의 위치에서 주어진 자료형 만큼 데이터를 읽고 인자 목록 포인터를 이동시킨다. 이동된 인자 목록 포인터는 다음 가변인자의 시작 포인터에 위치하게 된다.
 
@@ -107,7 +112,9 @@ type va_arg(
     첫 번째로 인자 목록 포인터를 가변인자의 자료형이 차지하는 스택 단위 크기 만큼 이동하여 다음 가변인자의 시작 주소를 가르키게 한다. `(ap += _INTSIZEOF(t)` 두 번째로 이동한 스택 포인터 만큼 다시 제자리로 돌아와 현재 읽으려는 가변인자의 시작 주소를 반환한다. `... - _INTSIZEOF(t)` 이때, 가변인자의 자료형으로 형 변환된다. `(t*)`
     ![x86_arg](https://user-images.githubusercontent.com/19742979/56413110-53769000-62c1-11e9-8091-51a2b7349f99.PNG){: .align-center}
 
-### va_copy
+
+
+#### va_copy
 
   인자 목록의 현재 상태를 복사한다. 
 
@@ -118,7 +125,9 @@ void va_copy(
 );
 ```
 
-### va_end
+
+
+#### va_end
 
   인자 목폭 포인터를 `NULL`로 초기화 시킨다. 
   함수가 종료되기 전에 `va_start` 또는 `va_copy`로 초기화된 인자 목록을 초기화해야한다.
@@ -141,24 +150,26 @@ void va_end(
 
 
 
-## 미해결
+### 미해결
 
 1. 가변인자 전달 시 형 변환(정수, 실수의 승격)을 거치는 이유는?
    함수 호출 시 매개변수가 저장되는 스택의 단위 크기 4byte(x86) 또는 8byte(x64)에 맞추는거라면, x64 환경의 경우에는? 일반 함수의 경우에도 승격을 거치는가?
 2. Windwos VS의 경우 `type`으로 `char`, `short`, `float` 를 정말 허용하는가?
    테스트 결과 `float`의 경우 데이터 값이 비정상으로 출력된다.
 
-## TODO
+
+
+### TODO
 
 1. x64 매크로 분석
 
 
 
-## 테스트
+### 테스트
 
 Visual Studio 2015, SDK 10
 
-### 코드1
+- 코드1
 
 ```c
 /**
@@ -274,11 +285,11 @@ void PrintVar(char *_szTypes, ...)
 }
 ```
 
-### 결과1
-
 ![variable_argument1](https://user-images.githubusercontent.com/19742979/55769397-9e232b80-5abb-11e9-9b2f-2ff6fa03270f.PNG){: .align-center}
 
-### 코드2
+
+
+- 코드2
 
 ```c
 /**
@@ -397,8 +408,6 @@ void VariableArgumentFunc(char *_szTypes, ...)
 	va_end(arg_ptr);
 }
 ```
-
-### 결과2
 
 ![variable_argument_x86](https://user-images.githubusercontent.com/19742979/56397967-594c8100-6281-11e9-91ef-d1516e7ea1c6.PNG){: .align-center}
 

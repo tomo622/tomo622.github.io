@@ -6,8 +6,6 @@ categories:
 last_modified_at: 2020-03-16T02:31:00
 ---
 
-## 데이터 모델 (Data Model)
-
  C언어의 정수 자료형은 운영체제, CPU의 플랫폼(32bit 또는 64bit)에 따라 다른 크기를 갖는다. 데이터 모델의 명칭에서 'S'는 `short`, 'I'는 `int`, 'L'은 `long`, 'LL'은 `long long`, 'P'는 `pointer`를 의미한다.
 
 | 데이터 모델    | short | int  | long | long long | pointer |                                    |

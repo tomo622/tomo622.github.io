@@ -6,8 +6,6 @@ categories:
 last_modified_at: 2020-03-16T02:40:00
 ---
 
-## 문자열 초기화 시 배열과 포인터 변수의 차이점
-
 ### 포인터 변수
 
 ```c
@@ -17,6 +15,8 @@ char *a = "test";
  `"test"` 라는 상수 문자열의 첫 번째 주소를 포인터 변수 `a`에 저장한다. 이때 상수 문자열은 Initialized Data 메모리 영역에 위치한다. 이 영역은 할당 후 값의 변경이 불가능하기 때문에 포인터 변수 `a`를 통한 접근은 가능하지만 값의 변경은 불가능하다. (read only)
 
 ![pointer_variable](https://user-images.githubusercontent.com/19742979/55703736-62ce2180-5a15-11e9-9e9c-ed2a960772af.PNG){: .align-center}
+
+
 
 ### 배열
 
@@ -29,6 +29,8 @@ char a[] = "test";
 ![array](https://user-images.githubusercontent.com/19742979/55703720-5944b980-5a15-11e9-91ed-2d1d377e7929.PNG){: .align-center}
 
 ---
+
+
 
 ### 테스트 코드
 
