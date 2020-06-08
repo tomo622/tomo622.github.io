@@ -32,22 +32,22 @@ int[] arr = {//원소들 저장}
 boolean[] visit = new boolean[N];
 
 void combination(int index, int cnt){
-  	//이 개수에 대한 제한과 카운터 파라미터를 제거하면 모든 조합을 구할 수 있다.
-    if(cnt == M){
-        //현재 방문 상태인 원소 출력...
-        return;
-    }
+  //이 개수에 대한 제한과 카운터 파라미터를 제거하면 모든 조합을 구할 수 있다.
+  if(cnt == M){
+    //현재 방문 상태인 원소 출력...
+    return;
+  }
   
-    if(index >= N || cnt > M || visit[index]) return;
+  if(index >= N || cnt > M || visit[index]) return;
+  	
+  //부분집합을 구하는 경우 아래 1, 2번의 호출 순서에 따라 공집할을 먼저 구할지 모든 원소를 갖는 집합을 먼저 구할지 정할 수 있다.
+  //1. 현재 인덱스를 선택하는 경우
+  visit[index] = true;
+  combination(index+1, cnt+1);
+  visit[index] = false;
     
-  	//부분집합을 구하는 경우 아래 1, 2번의 호출 순서에 따라 공집할을 먼저 구할지 모든 원소를 갖는 집합을 먼저 구할지 정할 수 있다.
-    //1. 현재 인덱스를 선택하는 경우
-    visit[index] = true;
-    combination(index+1, cnt+1);
-    visit[index] = false;
-    
-    //2. 현재 인덱스를 선택하지 않는 경우
-    combination(index+1, cnt);
+  //2. 현재 인덱스를 선택하지 않는 경우
+  combination(index+1, cnt);
 }
 ```
 

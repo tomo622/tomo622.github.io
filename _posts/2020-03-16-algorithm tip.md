@@ -75,21 +75,21 @@ int N = //목표 개수
 int[][] map = //맵 생성
   
 private static void recursive(int cnt, int cr, int cc) {
-		if(cnt == N) {
-      //선택된 셀 출력
-			return;
-		}
+  if(cnt == N) {
+    //선택된 셀 출력
+    return;
+  }
 		  
-		for(int r = cr; r < N; r++) {
-			for(int c = cc; c < M; c++) {
-				if(map[r][c] != 0) continue;
-				
-				map[r][c] = 1; //맵에 직접 표시할 수 없는 경우 'boolean[][] visit' 사용
-				recursive(cnt+1, r, c+1);
-				map[r][c] = 0;
-			}
-			cc=0; //다음 행 탐색 시작 시 첫번째 열 부터 탐색할 수 있도록
-		}
-	}
+  for(int r = cr; r < N; r++) {
+    for(int c = cc; c < M; c++) {
+      if(map[r][c] != 0) continue;
+
+      map[r][c] = 1; //맵에 직접 표시할 수 없는 경우 'boolean[][] visit' 사용
+      recursive(cnt+1, r, c+1);
+      map[r][c] = 0;
+    }
+    cc=0; //다음 행 탐색 시작 시 첫번째 열 부터 탐색할 수 있도록
+  }
+}
 ```
 
