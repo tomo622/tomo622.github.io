@@ -3,15 +3,13 @@ title: "조합"
 excerpt: "n개 중 m개를 선택하는 조합이나 부분집합을 구하는 방법에 대해 정리한다."
 categories:
  - algorithm
-last_modified_at: 2020-04-03T06:35:00
+last_modified_at: 2020-06-08T12:29:00
 ---
 
 ### 조합 (Combination)
 
-- n개 중 m개 선택하기
+- n개 중 m개 선택하기, 부분집합 구하기
 
-- 부분집합: m을 1부터 n까지 증가시키면 모든 부분집합을 구할 수 있다.
-  n개의 집합에서 부분집합의 개수: $2^n$ (하나는 공집합이고 하나는 진부분집합)
 
 
 #### 1. n개 중 2개를 선택하는 조합 (쌍을 만들기)
@@ -34,18 +32,21 @@ int[] arr = {//원소들 저장}
 boolean[] visit = new boolean[N];
 
 void combination(int index, int cnt){
+  	//이 개수에 대한 제한과 카운터 파라미터를 제거하면 모든 조합을 구할 수 있다.
     if(cnt == M){
         //현재 방문 상태인 원소 출력...
         return;
     }
+  
     if(index >= N || cnt > M || visit[index]) return;
     
-    //현재 인덱스를 선택하는 경우
+  	//부분집합을 구하는 경우 아래 1, 2번의 호출 순서에 따라 공집할을 먼저 구할지 모든 원소를 갖는 집합을 먼저 구할지 정할 수 있다.
+    //1. 현재 인덱스를 선택하는 경우
     visit[index] = true;
     combination(index+1, cnt+1);
     visit[index] = false;
     
-    //현재 인덱스를 선택하지 않는 경우
+    //2. 현재 인덱스를 선택하지 않는 경우
     combination(index+1, cnt);
 }
 ```
