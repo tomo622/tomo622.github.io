@@ -3,7 +3,7 @@ title: "알고리즘 Tip"
 excerpt: "알고리즘 문제를 풀면서 많이 사용되는 코드를 정리한다."
 categories:
  - algorithm
-last_modified_at: 2020-04-20T22:28:00
+last_modified_at: 2020-06-08T13:12:00
 ---
 
 #### 입출력 시간 줄이기 (Java)
@@ -64,5 +64,32 @@ while(start < end){
     start++;
     end--;
 }
+```
+
+
+
+#### Map(2차원 배열)에서 일정 개수 선택하기
+
+```java
+int N = //목표 개수
+int[][] map = //맵 생성
+  
+private static void recursive(int cnt, int cr, int cc) {
+		if(cnt == N) {
+      //선택된 셀 출력
+			return;
+		}
+		  
+		for(int r = cr; r < N; r++) {
+			for(int c = cc; c < M; c++) {
+				if(map[r][c] != 0) continue;
+				
+				map[r][c] = 1; //맵에 직접 표시할 수 없는 경우 'boolean[][] visit' 사용
+				recursive(cnt+1, r, c+1);
+				map[r][c] = 0;
+			}
+			cc=0; //다음 행 탐색 시작 시 첫번째 열 부터 탐색할 수 있도록
+		}
+	}
 ```
 
