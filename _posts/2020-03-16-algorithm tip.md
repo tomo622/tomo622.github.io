@@ -123,3 +123,23 @@ public void rotation(int[] dice, int r){
     }
 }
 ```
+
+
+
+### 크기가 같은 2차원 배열과 1차원 배열의 동시 탐색
+
+```java
+int[] arr = {1,2,3,4,5,6,7,8};
+{% raw %}int[][] map = {{1,2,3,4},{5,6,7,8}};{% endraw %}
+
+final int ROW_SIZE = map.length;
+final int COL_SIZE = map[0].length;
+
+for(int i = 0; i < ROW_SIZE; i++) {
+    for(int j = 0; j < COL_SIZE; j++) {
+        int arrIdx = j+i*COL_SIZE;
+        System.out.println("arr:" + arr[arrIdx] + ", map:" + map[i][j]);
+    }
+}
+```
+
