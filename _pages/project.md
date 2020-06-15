@@ -4,7 +4,7 @@ permalink: /side_projects/
 author_profile: true
 ---
 
-> [Android](#Android)
+> [Android](#android)
 
 ---
 
