@@ -3,7 +3,7 @@ title: "알고리즘 Tip"
 excerpt: "알고리즘 문제를 풀면서 많이 사용되는 코드를 정리한다."
 categories:
  - algorithm
-last_modified_at: 2020-06-09T10:48:00
+last_modified_at: 2020-07-01T23:50:00
 ---
 
 ### 생각
@@ -133,6 +133,46 @@ public void rotation(int[] dice, int r){
             dice[4] = temp;
             break;
     }
+}
+```
+
+
+
+### Map(2차원 배열)의 테두리 시계/반시계 방향 회전시키기
+
+```java
+final int ROW_SIZE = 4;
+final int COL_SIZE = 4;
+//상하좌우
+final int[] dr = {-1, 1, 0, 0};
+final int[] dc = {0, 0, -1, 1};
+final int[] cw = {3, 1, 2, 0}; //clockwise, 시계방향(우-하-좌-상)
+final int[] ccw = {1, 3, 0, 2}; //counter-clockwise, 반시계방향(하-우-상-좌)
+
+int[][] map = {...}
+//...
+rotate(map, copyMap, cw); //시계방향으로 회전
+rotate(map, copyMap, ccw); //반시계방향으로 회전
+
+void rotate(int[][] map, int[][] copyMap, int[] cd) {
+  int cr, cc, nr, nc;
+  cr = 0; cc = 0;
+
+  for(int d = 0; d < 4; d++) {
+    while(true) {
+      nr = cr + dr[cd[d]];
+      nc = cc + dc[cd[d]];
+
+      if(!(nr >= 0 && nr < ROW_SIZE && nc >= 0 && nc < COL_SIZE)) break;
+
+      copyMap[nr][nc] = map[cr][cc];
+
+      cr = nr;
+      cc = nc;
+
+      if(cr == 0 && cc == 0) break;
+    }
+  }
 }
 ```
 
