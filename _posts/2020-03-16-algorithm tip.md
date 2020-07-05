@@ -3,7 +3,7 @@ title: "알고리즘 Tip"
 excerpt: "알고리즘 문제를 풀면서 많이 사용되는 코드를 정리한다."
 categories:
  - algorithm
-last_modified_at: 2020-07-01T23:50:00
+last_modified_at: 2020-07-05T14:57:00
 ---
 
 ### 생각
@@ -14,7 +14,6 @@ last_modified_at: 2020-07-01T23:50:00
   - 자료형 : int -> long
   - 정해진 케이스에 따라 정해진 답이 반복된다면 메모이제이션
   - 범위를 반으로 나누어 실행해도 동일한 답을 얻을 수 있다면 Meet in the middle
-- 리스트를 탐색하면서 특정 조건에 부합되지 않는 요소를 제거해야할 경우 임의의 리스트에 조건에 부합되는 요소들만 저장하여 탐색이 종료된 후 리스트를 교체하는 것이 좋다.
 
 
 
@@ -193,5 +192,44 @@ for(int i = 0; i < ROW_SIZE; i++) {
         System.out.println("arr:" + arr[arrIdx] + ", map:" + map[i][j]);
     }
 }
+```
+
+
+
+### 리스트 탐색하면서 특정 요소 제거하기
+
+동적으로 크기가 변하는 리스트를 사용할 때 탐색을 진행하며 특정 요소를 제거해야하는 경우
+
+```java
+ArrayList<Integer> list = new ArrayList<Integer>();
+//...
+
+// 동적으로 크기가 변하는 리스트를 탐색하며 특정 요소를 제거할때 반복문의 제어변수와 리스트의 크기가 일치하지 않아 에러가 발생한다.
+for(int i = 0; i < list.size(); i++){ //error.
+  Integer item = list.get(i);
+  if(!조건){
+    list.remove(i);
+  }
+}
+
+// 1. 임의의 리스트에 조건에 부합되는 요소들만 저장하여 탐색이 종료된 후 리스트를 교체하는 방법
+ArrayList<Integer> temp = new ArrayList<Integer>();
+
+for(int i = 0; i < list.size(); i++){
+  Integer item = list.get(i);
+  if(조건){
+    temp.add(list.get(i));
+  }
+}
+
+list = temp;
+
+// 2. 리스트의 뒤에서 부터 탐색하며 제거해나가는 방법
+for(int i = list.size()-1; i >= 0; i--){
+  if(!조건){
+    list.remove(i);
+  }
+}
+
 ```
 
