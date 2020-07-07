@@ -1,9 +1,10 @@
 ---
 title: "알고리즘 Tip"
-excerpt: "알고리즘 문제를 풀면서 많이 사용되는 코드를 정리한다."
+excerpt: ""
+use_math: true
 categories:
  - algorithm
-last_modified_at: 2020-07-05T14:57:00
+last_modified_at: 2020-07-07T23:28:00
 ---
 
 ### 생각
@@ -231,5 +232,44 @@ for(int i = list.size()-1; i >= 0; i--){
   }
 }
 
+```
+
+
+
+### 배열 내에서 이동 시 이동 횟수 줄이기
+
+- 고정된 크기의 배열 내에서 정해진 이동 횟수만큼 이동한다.
+- 배열 양 끝에 닿으면 방향을 바꾸어 이동한다.
+
+정해진 이동 횟수만큼 반복문을 수행하면 비효율적이다.  
+'*이동 결과는 정해진 이동 횟수를 왕복 이동거리로 나눈 나머지의 결과와 같다*'는 원리를 이용하면 **이동 횟수를 왕복 이동거리 내로 줄일 수 있다.**
+
+$왕복 이동거리 = (배열 길이 - 1) * 2$  
+$이동 결과 = 이동 횟수 % 왕복 이동거리$
+
+```java
+final int ARR_SIZE = 6;
+final int MOVE_CNT = 45;
+final int[] dc = {-1, 1}; //좌우
+
+int cur = 3; //현재 위치(인덱스)
+int dir = 1; //현재 이동 방향(우)
+
+int returnCnt = (ARR_SIZE-1)*2; //왕복 이동거리
+int moveCnt = MOVE_CNT % returnCnt;
+
+int next;
+for(int i = 0; i < moveCnt; i++) {
+  next = cur + dc[dir];
+  
+  if(!(next >= 0 && next < ARR_SIZE)) {
+    dir = dir+1 == 2 ? 0 : dir+1;
+    next = cur + dc[dir];
+  }
+  
+  cur = next;
+}
+
+System.out.println(cur); //결과: 2
 ```
 
