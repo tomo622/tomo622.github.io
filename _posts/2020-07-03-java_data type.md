@@ -3,34 +3,34 @@ title: "자료형"
 excerpt: ""
 categories:
  - java language
-last_modified_at: 2020-07-03T23:21:00
+last_modified_at: 2020-07-15T01:45:00
 ---
 
-|                |                |                |                     | Data Type |            | Size(byte)      |
-| -------------- | -------------- | -------------- | ------------------- | --------- | ---------- | --------------- |
-| Primitive Type | Boolean Type   | -              | -                   | boolean   | -          | 1               |
-|                | Numeric Type   | Character Type | -                   | char      | -          | 2 (utf-16)      |
-|                |                | Integral Type  | Integer Type        | byte      | -          | 1               |
-|                |                |                |                     | short     | -          | 2               |
-|                |                |                |                     | int       | -          | 4               |
-|                |                |                |                     | long      | -          | 8               |
-|                |                |                | Floating Point Type | float     | -          | 4               |
-|                |                |                |                     | double    | -          | 8               |
-| Reference Type | Array Type     |                |                     |           |            | 전부 4(주소 값) |
-|                | Enum Type      |                |                     |           |            |                 |
-|                | Interface Type |                |                     |           |            |                 |
-|                | Class Type     | -              | -                   | String    |            |                 |
-|                |                | Wrapper Type   | -                   | Void      |            |                 |
-|                |                |                | -                   | Boolean   |            |                 |
-|                |                |                | -                   | Character |            |                 |
-|                |                |                | -                   | Number    | Byte       |                 |
-|                |                |                |                     |           | Short      |                 |
-|                |                |                |                     |           | Integer    |                 |
-|                |                |                |                     |           | Long       |                 |
-|                |                |                |                     |           | Float      |                 |
-|                |                |                |                     |           | Double     |                 |
-|                |                |                |                     |           | BigInteger |                 |
-|                |                |                |                     |           | BigDecimal |                 |
+|                |                |                     |                | Data Type |            | Size(byte)      |
+| -------------- | -------------- | ------------------- | -------------- | --------- | ---------- | --------------- |
+| Primitive Type | Boolean Type   | -                   | -              | boolean   | -          | 1               |
+|                | Numeric Type   | Integral Type       | Integer Type   | byte      | -          | 1               |
+|                |                |                     |                | short     | -          | 2               |
+|                |                |                     |                | int       | -          | 4               |
+|                |                |                     |                | long      | -          | 8               |
+|                |                |                     | Character Type | char      | -          | 2 (utf-16)      |
+|                |                | Floating Point Type | -              | float     | -          | 4               |
+|                |                |                     | -              | double    | -          | 8               |
+| Reference Type | Array Type     |                     |                |           |            | 전부 4(주소 값) |
+|                | Enum Type      |                     |                |           |            |                 |
+|                | Interface Type |                     |                |           |            |                 |
+|                | Class Type     | -                   | -              | String    |            |                 |
+|                |                | Wrapper Type        | -              | Void      |            |                 |
+|                |                |                     | -              | Boolean   |            |                 |
+|                |                |                     | -              | Character |            |                 |
+|                |                |                     | -              | Number    | Byte       |                 |
+|                |                |                     |                |           | Short      |                 |
+|                |                |                     |                |           | Integer    |                 |
+|                |                |                     |                |           | Long       |                 |
+|                |                |                     |                |           | Float      |                 |
+|                |                |                     |                |           | Double     |                 |
+|                |                |                     |                |           | BigInteger |                 |
+|                |                |                     |                |           | BigDecimal |                 |
 
 
 
