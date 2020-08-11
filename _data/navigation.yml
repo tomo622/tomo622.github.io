@@ -1,10 +1,10 @@
 # main links
 main:
-  - title: Side Projects
-    url: /side_projects/
+  - title: "Projects"
+    url: /projects/
 
-  - title: "Algorithm"
-    url: /algorithm/
+  - title: "Online Judge"
+    url: /online_judge/
 
   - title: "Categories"
     url: /categories/

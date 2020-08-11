@@ -1,6 +1,6 @@
 ---
-title: "알고리즘"
-permalink: /algorithm/
+title: "Online Judge"
+permalink: /online_judge/
 author_profile: true
 ---
 
