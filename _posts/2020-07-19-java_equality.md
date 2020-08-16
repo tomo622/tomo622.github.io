@@ -119,8 +119,6 @@ System.out.println(myClass1.equals(myClass2)); //true.
 public native int hashCode(); //메모리 주소값으로 해쉬 값을 생성하는 네이티브 코드를 호출한다.
 ```
 
-> 참고) `native` 키워드, JNI (Java Native Interface)  
-> JVM 위에서 실행되는 자바코드가 운영체제의 네이티브 응용 프로그램이나 C, C++ 과 같은 라이브러리들을 호출하거나 반대로 호출되는 것을 가능하게 하는 프로그래밍 프레임워크이다.
 
 - 위 `equals()` 메서드와 마찬가지로, **자바에서 Object 클래스를 상속 받는 대부분의 클래스에서는 값을 기반으로 해쉬 값을 생성하도록 오버라이딩 되어있다.**
 

@@ -23,8 +23,7 @@ last_modified_at: 2020-07-08T00:03:00
 | @FunctionalInterface | - 함수형 인터페이스에 적용<br />- 컴파일러가 함수형 인터페이스를 올바르게 선언했는지 확인해준다. |
 | @Native              | - native 메서드에서 참조되는 상수 앞에 붙인다. |
 
-이외에 애너테이션을 정의하는데 사용되는 Meta Annotation 이 있다.  
-(*native 메서드: JVM이 설치된 OS의 메서드로 보통 선언부는 자바로 정의하고 내부는 C언어로 작성되어 있다.)
+이외에 애너테이션을 정의하는데 사용되는 Meta Annotation 이 있다.
 
 - SuppressWarnings 의 경고 메시지 종류  
 
