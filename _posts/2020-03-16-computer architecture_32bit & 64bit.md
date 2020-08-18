@@ -1,18 +1,13 @@
 ---
-title: "Computer Architecture"
-excerpt: ""
+title: "32bit와 64bit의 차이"
+excerpt: "CPU와 운영체에서 메모리와의 관계"
 use_math: true
 categories:
- - computer science
+ - computer architecture
 last_modified_at: 2020-03-16T12:31:00
 ---
 
-> [32bit와 64bit의 차이, 메모리와의 관계](#32bit와-64bit의-차이-메모리와의-관계)
->
-
----
-# 32bit와 64bit의 차이, 메모리와의 관계
-### CPU에서
+# CPU에서
 
 32bit, 64bit CPU 는 각각 32bit, 64bit 크기의 레지스터, 주소 버스, 데이터 버스에 기반을 둔다. 일반적으로 CPU의 bit는 CPU가 처리하는 데이터의 최소 단위인 레지스터(Register)의 크기를 의미한다.
 
@@ -34,7 +29,7 @@ $$
 
 
 
-### 운영체제에서
+# 운영체제에서
 32bit, 64bit CPU가 인식할 수 있는 메모리의 최대 용량은 각각 4GB, 16EB 이지만, 운영체제 마다 제한하는 메모리의 크기는 다르다.
 
 Windows를 예로 들었을때, 32bit Windows의 경우 보통 4GB의 메모리 제한을 두지만 이 4GB 중 일부는 하드웨어 예약으로 사용된다. 물리적인 메모리 제한은 Windows 버전과 플랫폼에 따라 달라진다.
