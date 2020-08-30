@@ -75,9 +75,9 @@ a2 566034357(deep copy object): 2, B		// 원본 데이터에 영향을 주지 �
 a3 99347477(shallow copy object): 3, C
 ```
 
-# Reference Type 을 멤버 변수로 갖는 경우
+# Reference Type을 멤버 변수로 갖는 경우
 
-`Cloneable`의 구현 클래스가 깊은 복사를 수행해도 Reference Type은 얕은 복사가 된다.
+`Cloneable`의 구현 클래스가 깊은 복사를 수행해도 Reference Type의 멤버 변수는 얕은 복사가 된다.
 
 ```java
 class A implements Cloneable{
