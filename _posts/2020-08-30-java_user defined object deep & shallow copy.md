@@ -1,5 +1,5 @@
 ---
-title: "객체의 깊은 복사와 얕은 복사"
+title: "사용자 정의 객체의 깊은 복사와 얕은 복사"
 excerpt: ""
 categories:
  - java language
