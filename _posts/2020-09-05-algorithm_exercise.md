@@ -233,24 +233,25 @@ int ROW_LENGTH = 5;
 int COL_LENGTH = 4;
 
 //...
-for(int c = 0; c < COL_LENGTH; c++) {
-  int r = ROW_LENGTH-1;
+// 아래에서 부터 탐색하며 내린다.
+for(int r = ROW_LENGTH-1; r >= 0; r--) {
+  for(int c = 0; c < COL_LENGTH; c++) {
+    int cr = r;
+    int nr;
+    while(true) {
+      nr = cr + 1;
 
-  int er = -1; // empty row, 처음 빈곳이 발견되는 row index 저장
+      // 앞이 범위를 벗어나거나 다른 값이 있는 경우 종료
+      if(!(nr >= 0 && nr < ROW_LENGTH) || map[nr][c] != 0) break;
 
-  while(r >= 0) {
-    if(map[r][c] == 0) {
-      if(er == -1) er = r; // 처음 빈곳이 발견되는 경우
-    }
-    else {
-      if(er != -1) { // 데이터를 발견하면 빈곳이 발견된 위치로 이동시킨다.
-        map[er][c] = map[r][c];
-        map[r][c] = 0;
-        er--; // 원래 빈곳이었던 위치 바로 위로 빈 곳을 지정한다.
-      }
+      cr = nr;
     }
 
-    r--;
+    // 이동하지 않은 경우도 있기 때문에 temp에 저장하여 옮긴다.
+    // 이동하지 않은 경우 r과 cr이 겹친다.
+    int temp = map[r][c];
+    map[r][c] = 0;
+    map[cr][c] = temp;
   }
 }
 ```
