@@ -9,9 +9,6 @@ last_modified_at: 2020-12-13T15:25:00
 
 # 유클리드 호제법
 - 2개의 자연수 a, b에 대해서 a를 b로 나눈 나머지를 r이라 하면(단, a>b), a와 b의 최대공약수는 b와 r의 최대공약수와 같다.
-
-> 출처) https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%81%B4%EB%A6%AC%EB%93%9C_%ED%98%B8%EC%A0%9C%EB%B2%95
-
 - 2개의 자연수 a, b 의 최대공약수와 최소공배수를 각각 g, l 이라 했을 때, $a * b = g * l$ 이 성립한다.
 
 ```java

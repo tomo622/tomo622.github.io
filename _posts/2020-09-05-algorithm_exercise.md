@@ -98,7 +98,7 @@ System.out.println(cur); //결과: 2
 
 ```java
 int[] arr = {1,2,3,4,5,6,7,8};
-int[][] map = {{1,2,3,4},{5,6,7,8}};
+{% raw %}int[][] map = {{1,2,3,4},{5,6,7,8}};{% endraw %}
 
 final int ROW_SIZE = map.length;
 final int COL_SIZE = map[0].length;
