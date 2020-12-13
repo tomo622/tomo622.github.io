@@ -16,11 +16,11 @@ minimal_mistakes_skin    : "air" # "dark", "aqua", "default", "contrast", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Site Title"
+title                    : "My Development Note"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Dohyun Shin"
-description              : "An amazing website."
+description              : #"An amazing website."
 url                      : "https://tomo622.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Dohyun Shin"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
+  bio              : "I am a software developer."
   location         : "South Korea"
   email            :
   links:

@@ -1,9 +1,8 @@
 ---
-title: "블로그 소개"
+title: "About"
 permalink: /about/
 layout: single
 ---
 
-## Tomo's Lab
+개발 업무와 학습 내용을 기록하는 공간입니다.
 
-이 블로그는 개발 업무와 학습의 흔적을 기록하는 공간입니다.
