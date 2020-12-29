@@ -75,8 +75,26 @@ Collection 과 Map 모두 Collections Framework의 멤버이다.
   - 우선순위가 높은 데이터 부터 꺼내진다.
   - null 저장 불가
   - Heap의 형태로 데이터가 저장된다. (Heap은 배열 기반으로 만들어진 자료구조)
+  
 - Deque  
   양쪽 끝에서 추가, 삭제할 수 있는 (덕분에 Stack과 Queue의 기능을 모두 갖는다.) Queue의 변형으로 Queue 와 마찬가지로 인터페이스 형태로만 제공된다. 이를 구현한 대표적인 클래스는 ArrayDeque와 LinkedList 가 있다.
+
+  | Stack       | Deque         | Queue     |
+  | ----------- | ------------- | --------- |
+  | **push(e)** | addFirst(e)   |           |
+  |             | offerFirst(e) |           |
+  | **pop()**   | removeFirst() | remove()  |
+  |             | pollFirst()   | poll()    |
+  | peek()      | getFirst()    | element() |
+  |             | peekFirst()   | peek()    |
+  |             | addLast(e)    | add(e)    |
+  |             | offerLast(e)  | offer(e)  |
+  |             | removeLast()  |           |
+  |             | pollLast()    |           |
+  |             | getLast()     |           |
+  |             | peekLast()    |           |
+
+  (push, pop 만 Stack 의 기능이고 나머지는 Queue 의 기능이라고 생각하자.)
 
 
 
