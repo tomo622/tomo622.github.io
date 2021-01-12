@@ -6,95 +6,79 @@ categories:
 last_modified_at: 2020-09-02T21:50:00
 ---
 
-# Splash 만들기
+# splash.xml (Animation Resource)
 
-Splash 리소스는 `drawable` 아래에 포함
+`res` 아래에 `anim` 디렉터리를 생성하고 Splash Animation 리소스를 만든다.
 
-## SplashActivity.java
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<alpha
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       android:duration="1000"
+       android:fromAlpha="0.0"
+       android:toAlpha="1.0" />
+```
+
+
+
+# SplashActivity.java
 
 ```java
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 public class SplashActivity extends AppCompatActivity {
-  private static final String TAG = "SplashActivity";
-  private final int EXECUTOR_SERVICE_SLEEP_TIME = 1; // seconds
-  private final int EXECUTOR_SERVICE_AWAIT_TIME_FOR_TERMINATION = 5; // seconds
-
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    LayoutInflater layoutInflater = getLayoutInflater();
+    View rootView = layoutInflater.inflate(R.layout.activity_splash, null, false);
+    setContentView(rootView);
 
-    // 람다식 사용을 위해 Java8 설정 필요
-    // 1초 뒤에 MainActivity 실행
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
-    executorService.submit(()->{
-      Log.i(TAG, "splash executor service submit after "+ EXECUTOR_SERVICE_SLEEP_TIME + "seconds");
-      try {
-        TimeUnit.SECONDS.sleep(EXECUTOR_SERVICE_SLEEP_TIME);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash);
+    animation.setAnimationListener(new Animation.AnimationListener() {
+      @Override
+      public void onAnimationStart(Animation animation) {
       }
-      startActivity(new Intent(getApplication(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+      @Override
+      public void onAnimationEnd(Animation animation) {
+        startActivity(new Intent(getApplication(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+      }
+
+      @Override
+      public void onAnimationRepeat(Animation animation) {
+      }
     });
-
-    // ExecutorService 종료
-    // submit task 를 기다린 후 종료 (최대 5초)
-    // 5초 뒤에 종료되지 않았다면 강제 종료
-    try {
-      Log.i(TAG, "splash executor service shutdown (await time for termination: " + EXECUTOR_SERVICE_AWAIT_TIME_FOR_TERMINATION + " seconds)");
-      executorService.shutdown();
-      executorService.awaitTermination(EXECUTOR_SERVICE_AWAIT_TIME_FOR_TERMINATION, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      Log.e(TAG, "splash executor service interrupt exception: " + e.getMessage());
-    }
-    finally {
-      if(!executorService.isShutdown()){
-        Log.e(TAG, "splash executor service shutdown now");
-        executorService.shutdownNow();
-      }
-      finish();
-    }
+    rootView.startAnimation(animation);
   }
 }
 ```
 
-# Splash 설정
 
-## styles.xml
 
-```xml
-<resources>
-  ...
-  <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-    <item name="android:windowBackground">[splash resource]</item>
-  </style>
-</resources>
-```
-
-## AndroidManifest.xml
+# AndroidManifest.xml
 
 ```xml
 <application>
   ...
-  <activity 
+  <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:noHistory="true">
     <intent-filter>
       <action android:name="android.intent.action.MAIN" />
       <category android:name="android.intent.category.LAUNCHER" />
     </intent-filter>
   </activity>
-  
-  <activity android:name=".MainActivity"/>
+  ...
 </application>
 ```
 
