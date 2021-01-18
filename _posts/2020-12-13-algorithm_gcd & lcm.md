@@ -39,3 +39,21 @@ int LCM(int gcd, int n1, int n2) {
 }
 ```
 
+
+
+# 관련 문제
+
+## 대각선이 지나는 격자점의 개수 구하기
+
+<img width="656" alt="algorithm_gcd   lcm_image1" src="https://user-images.githubusercontent.com/19742979/104930631-c0641000-59e8-11eb-85d2-f795e79bd697.png">
+
+`대각선이 지나는 격자점의 개수 = 가로와 세로의 최대공약수 - 1`
+
+
+
+## 대각선이 지나는 격자 개수 구하기
+
+<img width="674" alt="algorithm_gcd   lcm_image2" src="https://user-images.githubusercontent.com/19742979/104930867-04efab80-59e9-11eb-9585-fa4fe5091b04.png">
+
+`대각선이 지나는 격자 개수 = 가로 + 세로 - 1 - 가로와 세로의 최대공약수`
+
