@@ -8,11 +8,11 @@ last_modified_at: 2021-01-11T01:25:00
 
 # build.gradle 설정
 
-```
+```groovy
 android {
 	viewBinding{
 		enabled=true
-  }
+	}
 }
 ```
 
