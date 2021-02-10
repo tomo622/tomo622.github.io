@@ -17,7 +17,7 @@ android {
 ```
 
 - 모듈에 포함된 모든 레이아웃 XML 파일에 대해 Binding Class 가 자동 생성
-- 각 XML 파일 이름을 카멜 표기법으로 변환하여 Binding Class 이름 지정 (접미사 '-Binding' 추가)
+- 각 XML 파일 이름을 파스칼 표기법으로 변환하여 Binding Class 이름 지정 (접미사 '-Binding' 추가)
 - 각 XML 파일에 구현되어 있는 Root View 와 ID 값을 갖는 모든 View 에 대한 참조 포함
 
 
