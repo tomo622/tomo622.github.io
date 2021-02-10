@@ -149,7 +149,7 @@ public class SubFragment extends Fragment{
   
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    binding = ActivityMainBinding.inflate(inflater, container, false);
+    binding = FragmentSubBinding.inflate(inflater, container, false);
     View view = binding.getRoot();
 
     binding.textView.setText("Hi");
@@ -166,6 +166,12 @@ public class SubFragment extends Fragment{
 ```
 
 `onDestroyView()` 에서 Binding 객체를 정리해야한다.
+
+> **참고**: 
+>
+> 프래그먼트를 특정 ViewGroup 에 바로 부착하지 않기 위해 `attachToRoot` 를 `false` 로 설정한다.
+>
+> `ViewBinding` 클래스에 정의된 `inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot)` 메소드에 전달된 파라미터 중 `root` 가 `null` 이 아니고 `attachToRoot` 는 `false` 값을 갖는 경우,  `root` 는 전개되는 `View` 에 설정되어 있는 `LayoutParams` 값을 올바르게 만들기 위해서만 사용된다.
 
 
 
