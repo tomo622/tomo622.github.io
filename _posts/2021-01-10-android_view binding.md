@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity{
 
 Binding Class 는 `<PROJECT>/app/build/generated/data_binding_base_class_source_out/<debug|release>/out/<PACKAGE PATH>/databinding/` 하위에 컴파일러에 의해 자동으로 생성된다.
 
+위에서도 언급했듯이 각 XML 파일 이름에 접미사 '-Binding' 이 추가된 상태에서 *파스칼 표기법*으로 변환된 이름으로 Binding Class 가 자동 생성된다. 또한 레이아웃의 각 View 가 지닌 ID 값은 *카멜 표기법*으로 변환되어 해당 View 에 대한 인스턴스명으로 사용된다.
+
 ```java
 // ActivityMainBinding.java
 
@@ -134,7 +136,7 @@ public final class ActivityMainBinding implements ViewBinding {
 ```
 
 1. `inflate(...)` 메소드를 호출하게 되면 내부에서는 `inflater` 를 통해 상응하는 XML 파일의 레이아웃 리소스를 `View` 객체로 전개하여 `bind(...)` 메소드에 전달한다. 이때 `View` 객체는 Root View 이다.
-2. `bind(...)` 에서는 전달 받은 `View` 객체를 통해 하위의 모든 View 를 찾아 인스턴스화 한다. 이때 리소스 ID 를 사용하기 때문에 레이아웃 리소스 파일에서 ID 속성이 명시되어 있지 않으면 인스턴스화 할 수 없다.
+2. `bind(...)` 에서는 전달 받은 `View` 객체를 통해 하위의 모든 View 를 찾아 인스턴스화 한다. 이때 리소스 ID 를 사용하기 때문에 레이아웃 리소스 파일에서 ID 속성이 명시되어 있지 않으면 인스턴스화 할 수 없다. 또한 ID 값을 카멜 표기법으로 변환하여 해당 View 에 대한 인스턴스의 이름을 결정짓게 된다.
 3. 마지막으로, 전개된 Root View 와 인스턴스화 된 모든 View 를 생성자에 전달하면서 Binding 객체를 생성한다.
 
 
