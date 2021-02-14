@@ -18,7 +18,7 @@ android {
 
 - 모듈에 포함된 모든 레이아웃 XML 파일에 대해 Binding Class 를 자동 생성
 - 각 XML 파일 이름을 파스칼 표기법으로 변환하여 Binding Class 이름 지정 (접미사 '-Binding' 추가)
-- 레이아웃에서 가져오기, 변수 및 포함 등의 기능을 사용할 수 있음
+- 레이아웃에서 가져오기(`import`), 변수(`variable`) 및 포함 등의 다양한 기능을 사용할 수 있음
 - Data Binding 으로 작성된 라이브러리를 사용할 경우에도 위 설정이 필요함
 
 
@@ -53,6 +53,15 @@ android {
 루트 태그 `layout` 이  `data` 및 Root View (`LinearLayout`) 를 감싼다. Root View 는 Data Binding 을 사용하지 않을 때 기존 레이아웃의 Root View 와 같다. 하지만 레이아웃 리소스를 액티비티와 연결하기 위해서 기존에 Root View 에 설정해야했던 `tools:context="<Activity Class Name>"` 속성은 더이상 필요하지 않다. (View Binding 에서도 동일)
 
 `data` 의 `variable` 태그는 레이아웃에서 사용할 수 있는 변수를 지정한다. View 의 특정 속성에 해당 변수를 사용하기 위해서 **표현식 구문** `@{}` 을 이용한다.
+
+`import` 태그를 이용하여 자료형에 대한 패키지 명을 생략할 수 있다.
+
+```xml
+<data>
+  <import type="com.example.DataObject"/>
+	<variable name="dataObj" type="DataObject"/>
+</data>
+```
 
 
 
@@ -175,5 +184,51 @@ Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레
 | `instanceof`     |                            |
 
 - 표현식은 `null` 또는 `0` 을 기본값으로 하는 **Null 포인터 예외 방지 기능**이 있다.
+
 - **동일한 레이아웃의 다른 View** 가 갖는 ID 를 통해 해당 View 를 참조할 수 있다. 이때 레이아웃에 상응하는 Binding Class 에 생성된 해당 View 에 대한 인스턴스 이름을 통해 참조하는 것이기 때문에 카멜 표기법으로 변환된 ID 값을 사용해야 한다.
 
+- 배열, 리스트, 맵과 같은 컬렉션 사용 시 각 클래스가 제공하는 메소드로 원소에 접근할 수 있지만 편의상 `[, ]` 연산자를 통해 접근할 수 도 있다. 맵에서 키로 값을 접근할 경우 `map[key]`, `map.key` 두 가지 방식을 모두 사용할 수 있다.  
+
+  ```xml
+  <data>
+    ...
+    <variable name="index" type="int"/>
+    <variable name="key" type="String"/>
+  </data>
+  ...
+  android:text="@{list.get(index)}"
+  android:text="@{list[index]}"
+  android:text="@{map.get(key)}"
+  android:text="@{map[key]}"
+  android:text="@{map.key}"
+  ```
+
+- 속성 값에 문자열 리터럴이 사용되는 경우 다음 두 가지 방법으로 표현식을 작성할 수 있다.  
+
+  ```xml
+  android:text="@{'VALUE'}"
+  android:text='@{`VALUE`}'
+  ```
+
+- 표현식 안에서 다음과 같이 리소스를 직접 사용할 수 있고 리소스의 매개변수로 변수나 View 참조를 전달할 수 있다.  
+
+  ```xml
+  android:padding="@{dimen/paddingValue}"
+  android:text="@{string/nameFormat(firstName, lastName)}"
+  android:text="@{string/nameFormat(user.firstName, textViewLastName.text)}"
+  ```
+
+  >  **Note**: 리소스 유형 별 표현식 참조가 일반 참조와 다를 수 있다. 필요한 경우가 오면 찾아보고 적용하자.
+
+- 속성 값에 기본값을 지정할 수 있다.  
+
+  ```xml
+  android:text="@{user.name, default=@string/default_name}"
+  android:text='@{user.name, default="USER NAME"}'
+  ```
+
+  
+
+# 표현식 처리 이벤트
+
+이벤트 속성 명은 대부분 리스너 메서드의 이름에 따라 결정된다. 예를들어, `View.OnClickListener` 에 상응하는 표현식 처리 이벤트 속성 명은 `android:onClick` 이다.
