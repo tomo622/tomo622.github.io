@@ -27,7 +27,6 @@ android {
 
 ```xml
 <!-- activity_main.xml -->
-
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
@@ -71,7 +70,6 @@ android {
 
 ```java
 // DataObject.java
-
 public class DataObject{
   private String data1;
   private String data2;
@@ -96,7 +94,6 @@ public class DataObject{
 
 ```java
 // MainActivity.java
-
 public class MainActivity extends AppCompatActivity {
   ActivityMainBinding binding;
   
@@ -123,6 +120,7 @@ binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 # Fragment 에서 Binding Class 사용하기
 
 ```java
+// SubFragment.java
 public class SubFragment extends Fragment {
   private FragmentSubBinding binding;
 
@@ -183,7 +181,7 @@ Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레
 | 배열 접근        | `[, ]`                     |
 | `instanceof`     |                            |
 
-- 표현식은 `null` 또는 `0` 을 기본값으로 하는 **Null 포인터 예외 방지 기능**이 있다.
+- 표현식은 `null`(참조) 또는 `0`(`int`), `false`(`boolean`) 를 기본값으로 하는 **Null 포인터 예외 방지 기능**이 있다.
 
 - **동일한 레이아웃의 다른 View** 가 갖는 ID 를 통해 해당 View 를 참조할 수 있다. 이때 레이아웃에 상응하는 Binding Class 에 생성된 해당 View 에 대한 인스턴스 이름을 통해 참조하는 것이기 때문에 카멜 표기법으로 변환된 ID 값을 사용해야 한다.
 
@@ -229,6 +227,144 @@ Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레
 
   
 
-# 표현식 처리 이벤트
+# 이벤트 처리
 
-이벤트 속성 명은 대부분 리스너 메서드의 이름에 따라 결정된다. 예를들어, `View.OnClickListener` 에 상응하는 표현식 처리 이벤트 속성 명은 `android:onClick` 이다.
+이벤트 속성 명은 대부분 *리스너 메서드의 이름에 따라 결정*된다. 예를들어, `View.OnClickListener` 인터페이스는 `onClick(View v)` 라는 추상 메서드를 갖고있다. 따라서 이에 상응하는 이벤트 속성 명은 `android:onClick` 가 된다.
+
+이벤트를 처리하는 메커니즘으로 **메서드 참조**와 **리스너 결합** 두 가지 방법이 있다.
+
+```xml
+<!-- activity_main.xml -->
+<data>
+  <variable name="handlers" type="com.example.MyHandlers" />
+  <variable name="presenter" type="com.example.Presenter" />
+</data>
+...
+<Button 
+  ...      
+  android:text="METHOD REFERENCES"
+  android:onClick="@{handlers::onClickForMethodReferences}" />
+<Button 
+  ...      
+  android:text="LISTENER BINDINGS"
+  android:onClick="@{()->presenter.onClickForListenerBindings()}" />
+```
+
+```java
+// MyHandlers.java
+public class MyHandlers {
+  // 메서드 참조를 위한 콜백 메서드
+  // 매개변수와 변환형이 View.OnClickListener 의 onClick 메서드와 일치해야한다.
+  public void onClickForMethodReferences(View view){
+    Log.d("MyHandlers", "Clicked for Method References!");
+  }
+}
+```
+
+```java
+// Presenter.java
+public class Presenter {
+  // 리스너 결합을 위한 콜백 메서드
+  // 반환형만 View.OnClickListener 의 onClick 메서드와 일치하면된다.
+  public void onClickForListenerBindings(){
+		Log.d("Presenter", "Clicked for Listener Bindings!");
+  }
+}
+```
+
+```java
+// MainActivity.java
+public class MainActivity extends AppCompatActivity {
+  ActivityMainBinding binding;
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    binding = ActivityMainBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
+
+    MyHandlers handlers = new MyHandlers();
+    binding.setHandlers(handlers);
+    
+    Presenter presenter = new Presenter();
+    binding.setPresenter(presenter);
+  }
+}
+```
+
+메소드 참조 방식과 리스너 결합 방식의 차이점은 아래 표와 같다.
+
+|                       | 메소드 참조                           | 리스너 결합                 |
+| --------------------- | ------------------------------------- | --------------------------- |
+| 표현식 실행 시점      | 데이터 결합 시점                      | 이벤트 발생 시점            |
+| 콜백 메서드 정의 조건 | 리스너 메서드와 매개변수, 반환형 일치 | 리스너 메서드와 반환형 일치 |
+| 표현식 내용           | 콜백 메서드 명                        | 람다식 (콜백 메서드 호출)   |
+
+
+
+### 메소드 참조 보충
+
+- 표현식 계산 결과 `null` 인 경우 리스너를 `null` 로 설정한다. 
+
+
+
+### 리스너 결합 보충
+
+- 표현식(람다식) 계산 과정에서 데이터 결합의 `null` **예외와 스레드 안정성이 보장**된다.
+- `null` 객체로 인해 표현식을 계산할 수 없는 경우 리스너 메서드의 반환형에 대한 기본값(`null`, `0`, `false`)을 반환한다.
+
+- 리스너 메서드의 *모든 매개변수를 무시*하거나 *모든 매개변수의 이름을 지정*할 수 있다.  
+
+  ```xml
+  <!-- onClick(View v)의 매개변수 'v'를 'view'로 지정 -->
+  android:onClick="@{(view)->presenter.onClickForListenerBindings()}"
+  ```
+- 리스너 메서드의 매개변수를 콜백 메서드에서 사용하려는 경우 다음과 같이 구현한다.
+
+  ```java
+  // Presenter.java
+  public class Presenter {
+    public void onClickForListenerBindings(View view){
+      Toast.makeText(view.getContext(), "Clicked for Listener Bindings!", Toast.LENGTH_SHORT).show();
+    }
+  }
+  ```
+
+  ```xml
+  android:onClick="@{(view)->presenter.onClickForListenerBindings(view)}"
+  ```
+
+- 콜백 메서드에서 하나 이상의 매개변수를 받을 수 있다.  
+
+  ```java
+  // Presenter.java
+  public class Presenter {
+    public void onClickForListenerBindings(View view, DataObject dataObj){
+      Toast.makeText(view.getContext(), dataObj.getData1(), Toast.LENGTH_SHORT).show();
+    }
+  }
+  ```
+
+  ```xml
+  <data>
+    ...
+    <variable name="dataObj" type="com.example.DataObject" />
+  </data>
+  ...
+  android:onClick="@{(view)->presenter.onClickForListenerBindings(view, dataObj)}"
+  ```
+
+> **Note**: 표현식(람다식)에서 복잡한 로직을 구현하는 대신, 호출하는 콜백 메서드 내에 비즈니스 로직을 구현하자.
+
+
+
+### 특별한 클릭 이벤트
+
+`View.OnClickListener` 를 사용해 특별한 클릭 이벤트를 구현하는 몇 가지 클래스가 존재한다. 이런 클래스 대한 클릭 이벤트 속성 명을 모두 `android:onClick` 으로 지정하게 되면 충돌이 발생할 수 있다. 때문에 별도의 이벤트 속성 명을 제공한다.
+
+| 클래스       | 리스너 setter                                   | 이벤트 속성명          |
+| ------------ | ----------------------------------------------- | ---------------------- |
+| SearchView   | setOnSearchClickListener(View.OnClickListener)  | android: onSearchClick |
+| ZoomControls | setOnZoomInClickListener(View.OnClickListener)  | android:onZoomIn       |
+| ZoomControls | setOnZoomOutClickListener(View.OnClickListener) | android:onZoomOut      |
+
