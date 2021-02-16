@@ -18,7 +18,7 @@ android {
 
 - 모듈에 포함된 모든 레이아웃 XML 파일에 대해 Binding Class 를 자동 생성
 - 각 XML 파일 이름을 파스칼 표기법으로 변환하여 Binding Class 이름 지정 (접미사 '-Binding' 추가)
-- 레이아웃에서 가져오기(`import`), 변수(`variable`) 및 포함 등의 다양한 기능을 사용할 수 있음
+- 레이아웃에서 가져오기(`import`), 변수(`variable`) 및 포함(`include`) 등의 다양한 기능을 사용할 수 있음
 - Data Binding 으로 작성된 라이브러리를 사용할 경우에도 위 설정이 필요함
 
 
@@ -51,18 +51,104 @@ android {
 
 루트 태그 `layout` 이  `data` 및 Root View (`LinearLayout`) 를 감싼다. Root View 는 Data Binding 을 사용하지 않을 때 기존 레이아웃의 Root View 와 같다. 하지만 레이아웃 리소스를 액티비티와 연결하기 위해서 기존에 Root View 에 설정해야했던 `tools:context="<Activity Class Name>"` 속성은 더이상 필요하지 않다. (View Binding 에서도 동일)
 
-`data` 의 `variable` 태그는 레이아웃에서 사용할 수 있는 변수를 지정한다. View 의 특정 속성에 해당 변수를 사용하기 위해서 **표현식 구문** `@{}` 을 이용한다.
-
-`import` 태그를 이용하여 자료형에 대한 패키지 명을 생략할 수 있다.
-
-```xml
-<data>
-  <import type="com.example.DataObject"/>
-	<variable name="dataObj" type="DataObject"/>
-</data>
-```
+View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` 에 정의 되는 변수와 `import` 된 클래스를 참조할 수 있다.
 
 
+
+### 가져오기(`import`)
+
+레이아웃 파일 내에서 클래스를 참조한다.
+
+- 자료형에 대한 패키지 명을 생략할 수 있다.  
+
+  ```xml
+  <data>
+    <import type="com.example.DataObject"/>
+    <variable name="dataObj" type="DataObject"/>
+  </data>
+  ```
+
+- `View` 클래스를 가져와 `android:visibility` 속성의 표현식 안에서 참조할 수 있다. 또한 해당 클래스의 정적 필드 및 메서드도 참조 가능하다.
+
+  ```xml
+  <data>
+    <import type="android.view.View"/>
+    <variable name="show" type="boolean"/>
+  </data>
+  ...
+  android:visibility="@{show ? View.VISIBLE : View.GONE}"
+  ```
+
+- 클래스 이름 충돌 발생 시 별칭을 지정할 수 있다.  
+
+  ```xml
+  <data>
+    <import type="android.view.View" />
+    <improt tpye="com.example.View" alias="MyView"/>
+  </data>
+  ```
+
+
+
+### 변수(`variable`)
+
+레이아웃에서 사용할 수 있는 변수를 지정한다.
+
+- 변수의 자료형은 컴파일 시점에 검사된다.
+- 자동 생성되는 Binding Class 에는 각 변수의 getter, setter 가 정의된다. .java 파일에서는 이 Binding Class 를 이용해 특정 변수의 setter 를 호출하여 값을 설정해야한다. setter 가 호출되기 전까지 각 변수는 자료형에 대한 기본값(`null`, `0`, `false`)을 사용한다.
+- `context`
+
+> **TODO**: 이해하지 못 한 내용
+>
+> 1) 변수의 자료형이 컴파일 시점에 검사되기 때문에 변수가 `Observable` 을 구현하거나 식별 가능한 컬렉션이라면 그 사항이 유형에 반영되어야한다. 변수가 `Observable` 인터페이스를 구현하지 않은 기본 클래스 또는 인터페이스라면 변수들이 식별되지 않는다.
+>
+> 2) 다양한 구성의 레이아웃 파일(가로, 세로 모드)이 서로 다를 때 변수가 결합된다. 이러한 레이아웃 파일 간에 충돌하는 변수가 정의되어서는 안 된다.
+>
+> 3) `context` 라는 이름의 특수 변수를 생성한다. 이는 `Context` 클래스 객체이고 Root View 의 `getContext()` 메서드를 통해 가져온다. `context` 변수는 이 이름을 사용하는 명시적 변수 선언으로 재정의 된다.
+
+
+
+### 포함(`include`)
+
+앱 전체에서 레이아웃을 재사용할 수 있다.
+
+- 포함되는 레이아웃의 결합으로 변수를 전달한다.  
+
+  ```xml
+  <!-- activity_main.xml -->
+  <?xml version="1.0" encoding="utf-8"?>
+  <layout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+      ...
+      <variable name="dataObj" type="DataObject"/>
+    </data>
+    <LinearLayout>
+      <include
+        layout="@layout/activity_sub"
+  			bind:dataObj="@{dataObj}"/>
+    </LinearLayout>
+  </layout>
+  ```
+
+  ```xml
+  <!-- activity_sub.xml -->
+  <?xml version="1.0" encoding="utf-8"?>
+  <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+      ...
+      <variable name="dataObj" type="DataObject" />
+    </data>
+    <LinearLayout>
+      <TextView
+        ...
+        android:text='@{dataObj.data1}' />
+    </LinearLayout>
+  </layout>
+  ```
+
+  
 
 # Data Object
 
@@ -367,4 +453,3 @@ public class MainActivity extends AppCompatActivity {
 | SearchView   | setOnSearchClickListener(View.OnClickListener)  | android: onSearchClick |
 | ZoomControls | setOnZoomInClickListener(View.OnClickListener)  | android:onZoomIn       |
 | ZoomControls | setOnZoomOutClickListener(View.OnClickListener) | android:onZoomOut      |
-
