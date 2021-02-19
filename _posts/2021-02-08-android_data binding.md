@@ -405,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
   <!-- onClick(View v)의 매개변수 'v'를 'view'로 지정 -->
   android:onClick="@{(view)->presenter.onClickForListenerBindings()}"
   ```
+
 - 리스너 메서드의 매개변수를 콜백 메서드에서 사용하려는 경우 다음과 같이 구현한다.
 
   ```java
@@ -453,3 +454,85 @@ public class MainActivity extends AppCompatActivity {
 | SearchView   | setOnSearchClickListener(View.OnClickListener)  | android: onSearchClick |
 | ZoomControls | setOnZoomInClickListener(View.OnClickListener)  | android:onZoomIn       |
 | ZoomControls | setOnZoomOutClickListener(View.OnClickListener) | android:onZoomOut      |
+
+
+
+# Observable Data Object
+
+Data Binding 에 사용된 객체의 값을 변경한다고 해서 그와 관련한 View 가 자동으로 업데이트 되진 않는다.
+
+Data Binding 라이브러리는 Observable Data Object 를 통해서 데이터 변경 시 다른 객체(리스너)에게 변경을 알리는 기능을 제공한다.
+
+Observable Data Object 에는 *객체*, *필드* 그리고 *컬렉션* 세 가지 유형이 존재한다.
+
+> **Note**: Observable 이란 객체가 데이터 변경을 다른 객체에 알릴 수 있는 기능을 의미한다. 
+
+
+
+### Observable Field
+
+내부적으로 단일 필드를 갖으며 `get()`, `set()` 메서드를 통해 해당 필드에 접근한다.
+
+Observable Field Object 는 `Observable` 인터페이스를 구현한 클래스로 생성할 수 있다. 또한 안드로이드에서 primitive 타입의 Observable Field 클래스를 제공한다. 아래와 같은 primitive 타입의 Observable Field 는 액세스 작업 중 박싱, 언박싱을 방지하기 위해 `public final` 로 설정해야한다.
+
+Primitive Type Observable Field Class:  `ObservableBoolean`, `ObservableByte`, `ObservableChar`, `ObservableShort`, `ObservableInt`, `ObservableLong`, `ObservableFloat`, `ObservableDouble`, `ObservableParcelable`
+
+```java
+// DataObject.java
+public class DataObject {
+  public final ObservableInt i = new ObservableInt();
+}
+```
+
+```java
+// MainActivity.java
+public class MainActivity extends AppCompatActivity {
+  ActivityMainBinding binding;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    ...
+    DataObject dataObj = new DataObject();
+    dataObj.i.set(1);
+    binding.setDataObj(dataObj);
+    ...
+  }
+}
+```
+
+```java
+// Presenter.java (리스너)
+public class Presenter {
+  public void onClickForListenerBindings(DataObject dataObj){
+    dataObj.i.set(dataObj.i.get()+1); // 1씩 증가, Data Binding 된 UI에 자동으로 반영
+  }
+}
+```
+
+```xml
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+  <data>
+    <variable name="presenter" type="com.dohyun.test.Presenter" />
+    <variable name="dataObj" type="com.dohyun.test.DataObject" />
+  </data>
+
+  <LinearLayout>
+    <Button
+            ...
+            android:onClick="@{()->presenter.onClickForListenerBindings(dataObj)}"/>
+    <TextView
+              ...
+              android:text='@{Integer.toString(dataObj.i)}'/>
+  </LinearLayout>
+</layout>
+```
+
+> **TODO**: Observable Field 대신 LiveData 사용하기 
+
+
+
+### Observable Collection
+
+
+
+ 
