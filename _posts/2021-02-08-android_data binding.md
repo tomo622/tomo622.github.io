@@ -30,21 +30,12 @@ android {
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="dataObj" type="com.example.DataObject"/>
+        <variable name="dataObj" type="com.example.DataClass"/>
     </data>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{dataObj.data1}" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{dataObj.data2}" />
+    <LinearLayout ... >
+        <TextView ... android:text="@{dataObj.data1}" />
+        <TextView ... android:text="@{dataObj.data2}" />
     </LinearLayout>
 </layout>
 ```
@@ -63,8 +54,8 @@ View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` �
 
   ```xml
   <data>
-    <import type="com.example.DataObject"/>
-    <variable name="dataObj" type="DataObject"/>
+    <import type="com.example.DataClass"/>
+    <variable name="dataObj" type="DataClass"/>
   </data>
   ```
 
@@ -100,11 +91,9 @@ View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` �
 
 > **TODO**: 이해하지 못 한 내용
 >
-> 1) 변수의 자료형이 컴파일 시점에 검사되기 때문에 변수가 `Observable` 을 구현하거나 식별 가능한 컬렉션이라면 그 사항이 유형에 반영되어야한다. 변수가 `Observable` 인터페이스를 구현하지 않은 기본 클래스 또는 인터페이스라면 변수들이 식별되지 않는다.
+> 1) 다양한 구성의 레이아웃 파일(가로, 세로 모드)이 서로 다를 때 변수가 결합된다. 이러한 레이아웃 파일 간에 충돌하는 변수가 정의되어서는 안 된다.
 >
-> 2) 다양한 구성의 레이아웃 파일(가로, 세로 모드)이 서로 다를 때 변수가 결합된다. 이러한 레이아웃 파일 간에 충돌하는 변수가 정의되어서는 안 된다.
->
-> 3) `context` 라는 이름의 특수 변수를 생성한다. 이는 `Context` 클래스 객체이고 Root View 의 `getContext()` 메서드를 통해 가져온다. `context` 변수는 이 이름을 사용하는 명시적 변수 선언으로 재정의 된다.
+> 2) `context` 라는 이름의 특수 변수를 생성한다. 이는 `Context` 클래스 객체이고 Root View 의 `getContext()` 메서드를 통해 가져온다. `context` 변수는 이 이름을 사용하는 명시적 변수 선언으로 재정의 된다.
 
 
 
@@ -122,11 +111,11 @@ View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` �
     xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
       ...
-      <variable name="dataObj" type="DataObject"/>
+      <variable name="dataObj" type="DataClass"/>
     </data>
-    <LinearLayout>
+    <LinearLayout ... >
       <include
-        layout="@layout/activity_sub"
+  			layout="@layout/activity_sub"
   			bind:dataObj="@{dataObj}"/>
     </LinearLayout>
   </layout>
@@ -138,12 +127,10 @@ View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` �
   <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
       ...
-      <variable name="dataObj" type="DataObject" />
+      <variable name="dataObj" type="DataClass" />
     </data>
-    <LinearLayout>
-      <TextView
-        ...
-        android:text='@{dataObj.data1}' />
+    <LinearLayout ... >
+      <TextView ... android:text='@{dataObj.data1}' />
     </LinearLayout>
   </layout>
   ```
@@ -152,14 +139,15 @@ View 의 특정 속성에  **표현식 구문** `@{}` 을 이용하여 `data` �
 
 # Data Object
 
-위에서 사용한 **데이터 객체** `DataObject` 의 구현은 아래와 같다.
+위에서 사용한 **데이터 객체** `DataClass` 의 구현은 아래와 같다.
 
 ```java
-// DataObject.java
-public class DataObject{
+// DataClass.java
+public class DataClass{
   private String data1;
   private String data2;
-  public DataObject(String data1, String data2){
+  
+  public DataClass(String data1, String data2){
     this.data1 = data1;
     this.data2 = data2;
   }
@@ -189,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     
-    DataObject dataObj = new DataObject("Hi", "Data Binding!");
+    DataClass dataObj = new DataClass("Hi", "Data Binding!");
     binding.setDataObj(dataObj);
   }
 }
@@ -217,7 +205,7 @@ public class SubFragment extends Fragment {
     // binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sub, container, false);
     View view = binding.getRoot();
 
-    DataObject dataObj = new DataObject("This is", "Fragment!");
+    DataClass dataObj = new DataClass("This is", "Fragment!");
     binding.setDataObj(dataObj);
 
     return view;
@@ -326,12 +314,10 @@ Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레
   <variable name="presenter" type="com.example.Presenter" />
 </data>
 ...
-<Button 
-  ...      
+<Button ...      
   android:text="METHOD REFERENCES"
   android:onClick="@{handlers::onClickForMethodReferences}" />
-<Button 
-  ...      
+<Button ...      
   android:text="LISTENER BINDINGS"
   android:onClick="@{()->presenter.onClickForListenerBindings()}" />
 ```
@@ -426,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
   ```java
   // Presenter.java
   public class Presenter {
-    public void onClickForListenerBindings(View view, DataObject dataObj){
+    public void onClickForListenerBindings(View view, DataClass dataObj){
       Toast.makeText(view.getContext(), dataObj.getData1(), Toast.LENGTH_SHORT).show();
     }
   }
@@ -435,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
   ```xml
   <data>
     ...
-    <variable name="dataObj" type="com.example.DataObject" />
+    <variable name="dataObj" type="com.example.DataClass" />
   </data>
   ...
   android:onClick="@{(view)->presenter.onClickForListenerBindings(view, dataObj)}"
@@ -459,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
 
 # Observable Data Object
 
-Data Binding 에 사용된 객체의 값을 변경한다고 해서 그와 관련한 View 가 자동으로 업데이트 되진 않는다.
+*Data Binding 에 사용된 객체의 값을 변경한다고 해서 그와 관련한 View 가 자동으로 업데이트 되진 않는다.*
 
 Data Binding 라이브러리는 Observable Data Object 를 통해서 데이터 변경 시 다른 객체(리스너)에게 변경을 알리는 기능을 제공한다.
 
@@ -471,40 +457,113 @@ Observable Data Object 에는 *객체*, *필드* 그리고 *컬렉션* 세 가�
 
 ### Observable Field
 
-내부적으로 단일 필드를 갖으며 `get()`, `set()` 메서드를 통해 해당 필드에 접근한다.
+**내부적으로 단일 필드를 갖으며** `get()`, `set()` 메서드를 통해 해당 필드에 접근한다.
 
-Observable Field Object 는 `Observable` 인터페이스를 구현한 클래스로 생성할 수 있다. 또한 안드로이드에서 primitive 타입의 Observable Field 클래스를 제공한다. 아래와 같은 primitive 타입의 Observable Field 는 액세스 작업 중 박싱, 언박싱을 방지하기 위해 `public final` 로 설정해야한다.
+안드로이드에서 primitive 타입의 Observable Field 클래스를 제공한다. 아래와 같은 primitive 타입의 Observable Field 는 액세스 작업 중 박싱, 언박싱을 방지하기 위해 `public final` 로 설정해야한다.
 
-Primitive Type Observable Field Class:  `ObservableBoolean`, `ObservableByte`, `ObservableChar`, `ObservableShort`, `ObservableInt`, `ObservableLong`, `ObservableFloat`, `ObservableDouble`, `ObservableParcelable`
+[Observable Object](#observable-object) 또한 필드로 사용할 수 있다.
+
+- Primitive Type Observable Field Class:  `ObservableBoolean`, `ObservableByte`, `ObservableChar`, `ObservableShort`, `ObservableInt`, `ObservableLong`, `ObservableFloat`, `ObservableDouble`, `ObservableParcelable`
+
+
+
+### Observable Collection
+
+- Observable Collection Class: `ObservableArrayMap`, `ObservableArrayList`, `ObservableMap`, `ObservableList`
+
+
+
+### Observable Object
+
+`Observable` 인터페이스를 구현하거나 `BaseObservable` 클래스를 상속 받은 클래스를 통해 생성할 수 있다.
+
+`Observable` 인터페이스를 구현하여 생성하는 경우 객체 속성 변경 알림을 받을 리스너를 직접 추가, 삭제해야 한다. 또한 알림이 전송되는 시점을 개발자가 직접 결정해야 한다. `BaseObservable` 클래스는 이러한 리스너 관리 메커니즘을 구현한 클래스로 Observable Class 구현 시 사용이 편리하다.
+
+`BaseObservable` 을 상속 받은 데이터 클래스는 속성 변경 시 리스너에게 자동으로 알린다.
+
+위에서 언급한 Primitive Type Observable Field Class 는 `BaseObservableField` 클래스를 상속 받았다. 이 `BaseObservableField` 클래스 역시 `BaseObservable` 을 상속 받은 클래스이다.
+
+Observable Data Class 의 구현 방식은 다음과 같다.
+
+- `BaseObservable` 클래스 상속
+- getter 메서드에 `@Bindable` 어노테이션 할당
+- setter 메서드 내부에 `notifyPropertyChanged()` 메서드 호출
+
+> **Note**: Data Binding 라이브러리는 **Data Binding 에 사용된 리소스의 ID 를 포함하는 `BR` 클래스**를 생성한다. `@Bindable` 어노테이션은 컴파일 중에 `BR` 클래스 파일에 항목을 생성한다. BR.java 파일의 생성 경로는 다음과 같다. `<Project>/app/build/generated/ap_generated_sources/debug/out/androidx/databinding/library/baseAdapters/BR.java`
+
+
+
+### Test
 
 ```java
-// DataObject.java
-public class DataObject {
-  public final ObservableInt i = new ObservableInt();
+// DataClass.java
+public class DataClass {
+  public final ObservableInt observableInt = new ObservableInt();
+}
+```
+
+```java
+// ObservableClass.java
+public class ObservableDataClass extends BaseObservable {
+  private String str;
+  private int i;
+
+  @Bindable
+  public String getStr() {
+    return str;
+  }
+  @Bindable
+  public int getI() {
+    return i;
+  }
+  public void setStr(String str) {
+    this.str = str;
+    notifyPropertyChanged(BR.str);
+  }
+  public void setI(int i) {
+    this.i = i;
+    notifyPropertyChanged(BR.i);
+  }
 }
 ```
 
 ```java
 // MainActivity.java
 public class MainActivity extends AppCompatActivity {
-  ActivityMainBinding binding;
-
+  ...
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     ...
-    DataObject dataObj = new DataObject();
-    dataObj.i.set(1);
+    // Observable Field Test
+    final DataClass dataObj = new DataClass();
+    dataObj.observableInt.set(1);
     binding.setDataObj(dataObj);
-    ...
-  }
-}
-```
+    binding.buttonForObservableFieldTest.setOnClickListener(view->{
+      // 1씩 증가, Data Binding 된 UI에 자동으로 반영
+      dataObj.observableInt.set(dataObj.observableInt.get()+1);
+    });
 
-```java
-// Presenter.java (리스너)
-public class Presenter {
-  public void onClickForListenerBindings(DataObject dataObj){
-    dataObj.i.set(dataObj.i.get()+1); // 1씩 증가, Data Binding 된 UI에 자동으로 반영
+    // Observable Collection Test
+    final ObservableArrayMap<String, Object> user = new ObservableArrayMap<>();
+    user.put("name", "unknown");
+    user.put("age", 0);
+    binding.setUser(user);
+    binding.buttonForObservableCollectionTest.setOnClickListener(view-> {
+      // user 정보 변경, Data Binding 된 UI에 자동으로 반영
+      user.replace("name", "Dohyun");
+      user.replace("age", 30);
+    });
+    
+    // Observable Object Test
+    final ObservableDataClass observableDataClass = new ObservableDataClass();
+    observableDataClass.setStr("empty");
+    observableDataClass.setI(0);
+    binding.setObservableDataObj(observableDataClass);
+    binding.buttonForObservableObjectTest.setOnClickListener(view ->{
+      // 데이터 변경, Data Binding 된 UI에 자동으로 반영
+      observableDataClass.setStr("Changed");
+      observableDataClass.setI(100);
+    });
   }
 }
 ```
@@ -512,27 +571,30 @@ public class Presenter {
 ```xml
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
   <data>
-    <variable name="presenter" type="com.dohyun.test.Presenter" />
-    <variable name="dataObj" type="com.dohyun.test.DataObject" />
+    <import type="com.example.DataClass"/>
+    <import type="androidx.databinding.ObservableArrayMap"/>
+		<import type="com.example.ObservableDataClass"/>
+    <variable name="dataObj" type="DataClass" />
+    <variable name="user" type="ObservableArrayMap&lt;String, Object>" />
+    <variable name="observableDataObj" type="ObservableDataClass" />
   </data>
 
-  <LinearLayout>
-    <Button
-            ...
-            android:onClick="@{()->presenter.onClickForListenerBindings(dataObj)}"/>
-    <TextView
-              ...
-              android:text='@{Integer.toString(dataObj.i)}'/>
+  <LinearLayout ... >
+    <!-- Observable Field Test -->
+    <Button ... android:id="@+id/buttonForObservableFieldTest"/>
+    <TextView ... android:text='@{Integer.toString(dataObj.observableInt)}'/>
+    
+    <!-- Observable Collection Test -->
+    <Button ... android:id="@+id/buttonForObservableCollectionTest"/>
+    <TextView ... android:text='@{"name: " + user.name + ", age: " + user.age.toString()}'/>
+    
+    <!-- Observable Object Test -->
+    <Button ... android:id="@+id/buttonForObservableObjectTest"/>
+    <TextView ... android:text='@{"str: " + observableDataObj.str + ", int: " + Integer.toString(observableDataObj.i)}'/>
+    
   </LinearLayout>
 </layout>
 ```
 
 > **TODO**: Observable Field 대신 LiveData 사용하기 
 
-
-
-### Observable Collection
-
-
-
- 
