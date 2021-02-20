@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity{
 
 # 생성된 Binding Class 분석
 
-Binding Class 는 `<PROJECT>/app/build/generated/data_binding_base_class_source_out/<debug|release>/out/<PACKAGE PATH>/databinding/` 하위에 컴파일러에 의해 자동으로 생성된다.
+Binding Class 는 컴파일러에 의해 자동으로 생성된다.
 
 위에서도 언급했듯이 각 XML 파일 이름에 접미사 '-Binding' 이 추가된 상태에서 *파스칼 표기법*으로 변환된 이름으로 Binding Class 가 자동 생성된다. 또한 레이아웃의 각 View 가 지닌 ID 값은 *카멜 표기법*으로 변환되어 해당 View 에 대한 인스턴스명으로 사용된다.
 
