@@ -1,5 +1,5 @@
 ---
-title: "Data Binding"
+title: "Data Binding(1)"
 excerpt: ""
 categories:
  - android
@@ -225,11 +225,25 @@ View Binding 에서와 마찬가지로 `onDestroyView()` 에서 Binding 객체�
 
 # Binding Class
 
-Binding Class 는 `<PROJECT>/app/build/generated/data_binding_base_class_source_out/<debug|release>/out/<PACKAGE PATH>/databinding/` 하위에 컴파일러에 의해 자동으로 생성된다. (View Binding Class 생성 위치와 동일)
+Binding Class 는 `모듈 패키지/databinding` 아래에 컴파일러에 의해 자동으로 생성된다.
 
 위에서도 언급했듯이 각 XML 파일 이름에 접미사 '-Binding' 이 추가된 상태에서 *파스칼 표기법*으로 변환된 이름으로 Binding Class 가 자동 생성된다. 또한 레이아웃의 각 View 가 지닌 ID 값은 *카멜 표기법*으로 변환되어 해당 View 에 대한 인스턴스명으로 사용된다. (View Binding Class 명명 규칙과 동일)
 
-Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레이아웃의 속성과 View 의 모든 결합을 갖고 표현식의 값을 할당하는 방법이 정의되어 있다. (`ViewDataBinding` 은 `BaseObservable` 를 상속 받고 `ViewBinding` 를 구현한다.)
+Binding Class 는 `ViewDataBinding` 클래스를 상속 받아 생성된다. 레이아웃의 속성(변수)과 View 의 모든 결합을 갖고 이 둘을 연결하며 표현식에 값을 할당하는 방법이 정의되어 있다. (`ViewDataBinding` 은 `BaseObservable` 를 상속 받고 `ViewBinding` 를 구현한다.)
+
+생성되는 Binding Class 의 이름이나 위치하는 패키지를 변경할 수 있다.
+
+```xml
+<data class="MyActivity"> ... </data>
+```
+
+```xml
+<data class=".MyActivity"> ... </data> <!-- 모듈 패키지 바로 아래에 생성 -->
+```
+
+```xml
+<data class="com.example.sub.MyActivity"> ... </data>
+```
 
 
 
@@ -489,7 +503,7 @@ Observable Data Class 의 구현 방식은 다음과 같다.
 - getter 메서드에 `@Bindable` 어노테이션 할당
 - setter 메서드 내부에 `notifyPropertyChanged()` 메서드 호출
 
-> **Note**: Data Binding 라이브러리는 **Data Binding 에 사용된 리소스의 ID 를 포함하는 `BR` 클래스**를 생성한다. `@Bindable` 어노테이션은 컴파일 중에 `BR` 클래스 파일에 항목을 생성한다. BR.java 파일의 생성 경로는 다음과 같다. `<Project>/app/build/generated/ap_generated_sources/debug/out/androidx/databinding/library/baseAdapters/BR.java`
+> **Note**: Data Binding 라이브러리는 **Data Binding 에 사용된 리소스의 ID 를 포함하는 `BR` 클래스**를 `모듈 패키지` 아래에 생성한다. `@Bindable` 어노테이션은 컴파일 중에 `BR` 클래스 파일에 항목을 생성한다.
 
 
 
@@ -596,5 +610,5 @@ public class MainActivity extends AppCompatActivity {
 </layout>
 ```
 
-> **TODO**: Observable Field 대신 LiveData 사용하기 
+> **TODO**: Observable Field 대신 LiveData 사용하기
 
