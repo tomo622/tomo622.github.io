@@ -43,32 +43,23 @@ public class MainActivity extends AppCompatActivity {
     Button btnInflateViewStub = findViewById(R.id.btnInflateViewStub);
     ViewStub viewStub = findViewById(R.id.viewStub);
     
-    final View[] replaceView = {null};
-    btnInflateViewStub.setOnClickListener(view -> {
-      // inflate를 사용하는 경우
-      if(viewStub.getParent() != null){
-        replaceView[0] = viewStub.inflate();
+    viewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
+      @Override
+      public void onInflate(ViewStub viewStub, View view) {
+        ((TextView)view.findViewById(R.id.textView)).setText("REPLACE VIEW");
+      }
+    });
 
-        if(replaceView[0] != null){
-          ((TextView)replaceView[0].findViewById(R.id.textView)).setText("REPLACE VIEW");
-        }
-      }      
+    btnInflateViewStub.setOnClickListener(view -> {
+			viewStub.inflate(); 
+      // 또는
+      viewStub.setVisibility(View.VISIBLE);
     });
   }
 }
 ```
 
-`setVisibility(View.VISIBLE)` 을 이용해 View를 확장하는 경우는 아래와 같이 작성할 수 있다.
+`View.OnInflateListener` 는 ViewStub가 레이아웃 리소스를 성공적으로 확장 한 후 알림을 수신한다.
 
-```java
-...
-if(viewStub != null){
-  viewStub.setVisibility(View.VISIBLE);
-  View temp = findViewById(R.id.viewReplace); // inflatedId 값으로 확장된 View를 참조할 수 있다.
-
-  if(temp != null){
-    ((TextView)temp.findViewById(R.id.textView)).setText("REPLACE VIEW");
-  }
-}
-```
+`inflate()` 를 사용하여 View를 확장하는 경우 확장된 View를 반환하지만, `setVisibility(View.VISIBLE)` 을 이용해 View를 확장하는 경우 `inflatedId` 값으로 View를 참조해야한다.
 
