@@ -6,13 +6,13 @@ categories:
 last_modified_at: 2021-02-21T12:28:00
 ---
 
-런타임에 레이아웃 리소스를 느리게 확장할 수 있는 View 이다. 선택적으로 사용자에게 노출 될 view 의 경우 ViewStub 으로 구현하는 것이 좋다.
+런타임에 레이아웃 리소스를 느리게 확장할 수 있는 View 이다. 필요할 때만 View를 로드하여 메모리 사용을 줄이고 렌더링 속도를 높일 수 있다.
 
 최초에 레이아웃이 보이지 않고 크기가 0 인 상태로 View 계층 구조에 존재한다.
 
-런타임 중 ViewStub가 보여지거나(`setVisibility(View.VISIBLE)`) 레이아웃 리소스가 확장(`inflate()`) 되면 ViewStub는 속성으로 지정된 다른 레이아웃을 확장하여 자신을 대체한다. 따라서 확장된 새로운 View는 ViewStub의 레이아웃 매개변수와 함께 ViewStub의 부모에 추가된다. 이때 ViewStub는 View 계층 구조에서 사라진다.
+런타임 중 ViewStub가 보여지거나(`setVisibility(View.VISIBLE)`) 레이아웃 리소스가 확장(`inflate()`) 되면 ViewStub는 속성으로 지정된 다른 레이아웃을 확장하여 *자신을 대체한다.* 따라서 확장된 새로운 View는 ViewStub의 레이아웃 매개변수와 함께 ViewStub의 부모에 추가된다. 이때 ViewStub는 View 계층 구조에서 사라지고 ViewStub의 ID는 더이상 유효하지 않다.
 
-`inflatedId` 속성을 이용해 ViewStub가 갖는 ID와 별개로 확장 후 대체되는 View에 ID 값을 지정할 수 있다.
+`layout` 속성에 확장 시 대체할 레이아웃을 지정한다. `inflatedId` 속성을 이용해 ViewStub가 갖는 ID와 별개로 확장 후 대체되는 View에 ID 값을 지정할 수 있다.
 
 ```xml
 <!-- activity_main.xml -->
