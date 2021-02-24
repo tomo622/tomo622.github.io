@@ -223,6 +223,26 @@ View Binding 에서와 마찬가지로 `onDestroyView()` 에서 Binding 객체�
 
 
 
+### Binding Class 생성 방법
+
+```java
+MyLayoutBinding binding;
+
+/* activity 에서 사용 */
+binding = MyLayoutBinding.inflate(getLayoutInflater()); 
+binding = DataBindingUtil.setContentView(this, R.layout.my_layout); // inflate 와 setContentView 동시에 처리
+
+/* fragment, adapter 에서 사용 */
+binding = MyLayoutBinding.inflate(layoutInflater, viewGroup, false);
+binding = DataBindingUtil.inflate(layoutInflater, R.layout.my_layout, vieweGroup, false);
+
+/* 이미 생성된 View를 결합 */
+binding = MyLayoutBinding.bind(view);
+binding = DataBindingUtil.bind(view);
+```
+
+
+
 # Binding Class
 
 Binding Class 는 `모듈 패키지/databinding` 아래에 컴파일러에 의해 자동으로 생성된다.
